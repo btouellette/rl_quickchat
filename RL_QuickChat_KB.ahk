@@ -12,7 +12,7 @@ PositionX      := 31   ; x position of top left corner of overlay
 PositionY      := 423  ; y position of top left corner of overlay
 ControllerMode := "PC" ; which controller icons to use (PS, XB, XB1), can set to PC to use numbers
 FadeDelay      := 2000 ; number of milliseconds before overlay fades
-SleepInterval  := 400  ; number of milliseconds to wait between chat hotkey and message
+SleepInterval  := 200  ; number of milliseconds to wait between sending chat hotkey and sending message (increase this if the message sometimes doesn't get sent)
 
 ; Trigger hotkey (can add multiple triggers with different groups of messages, just copy this, replace F1 with another hotkey, and change the messages)
 #IfWinActive ahk_exe RocketLeague.exe
