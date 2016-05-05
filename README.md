@@ -1,6 +1,8 @@
 # rl_quickchat
 AutoHotkey script to add custom quick chats for use in Rocket League
 
+https://gfycat.com/ElectricBruisedAzurevase
+
 I've provided two versions of the script, one is the version I use with my 360 controller (RL_QuickChat_Controller.ahk) and another that has keybindings customized for keyboard usage (RL_QuickChat_KB.ahk).
 
 How to Use
