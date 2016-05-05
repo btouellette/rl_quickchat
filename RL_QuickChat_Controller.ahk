@@ -5,43 +5,31 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance, force
 Menu Tray, tip, %A_ScriptName% ; Custom traytip
 OverlayVisible := 0
+POVReleased    := 1
 
 ; ---------------------- CUSTOMIZE BELOW HERE ----------------------
 
 PositionX      := 31   ; x position of top left corner of overlay
 PositionY      := 423  ; y position of top left corner of overlay
 ControllerMode := "XB" ; which controller icons to use (PS, XB, XB1), can set to PC to use numbers
-FadeDelay      := 2000 ; number of milliseconds before menu fades
+FadeDelay      := 2000 ; number of milliseconds before overlay fades
 SleepInterval  := 400  ; number of milliseconds to wait between chat hotkey and message
+PollInterval   := 5    ; number of milliseconds to wait between checks of the controller d-pad
 
-; Trigger hotkey (can add multiple triggers with different groups of messages, just copy this, replace F1 with another hotkey, and change the messages)
-;#IfWinActive ahk_exe RocketLeague.exe
-F1::
+SetTimer Sub_WatchPOV, %PollInterval%
+
+; Trigger hotkey (can add multiple triggers with different groups of messages, just copy this, replace Joy6 with another hotkey, and change the messages)
+#IfWinActive ahk_exe RocketLeague.exe
+Joy6::
     ChatHotkey     := "T"              ; key assigned to chat (or teamchat if you want to output to teamchat)
     MessageGroup   := "CUSTOM"         ; the category heading for this group (INFORMATIONAL/COMPLIMENTS/REACTIONS/APOLOGIES are the in-game headings)
     MessageUp      := "gg"             ; message assigned to up for this group
     MessageLeft    := "glhf"           ; message assigned to left for this group
     MessageRight   := "What a pass!"   ; message assigned to right for this group
-    MessageDown    := "Psyonix rules!" ; message assigned to down for this group
+    MessageDown    := "Nice clear!" ; message assigned to down for this group
     Gosub Sub_BuildHTML
     Gosub Sub_ToggleOverlay
 return
-
-; Up hotkey
-;#IfWinActive ahk_exe RocketLeague.exe
-$F2::Gosub Sub_Up
-
-; Left hotkey
-;#IfWinActive ahk_exe RocketLeague.exe
-$F3::Gosub Sub_Left
-
-; Right hotkey
-;#IfWinActive ahk_exe RocketLeague.exe
-$F4::Gosub Sub_Right
-
-; Down hotkey
-;#IfWinActive ahk_exe RocketLeague.exe
-$F5::Gosub Sub_Down
 
 ; ---------------------- CUSTOMIZE ABOVE HERE ----------------------
 
@@ -49,7 +37,7 @@ Sub_Up:
     if OverlayVisible {
         Send %ChatHotkey%
         Sleep %SleepInterval%
-        Send %MessageUp%
+        SendRaw %MessageUp%
         Send {enter}
         Gosub Sub_ToggleOverlay
     } else {
@@ -63,7 +51,7 @@ Sub_Left:
     if OverlayVisible {
         Send %ChatHotkey%
         Sleep %SleepInterval%
-        Send %MessageLeft%
+        SendRaw %MessageLeft%
         Send {enter}
         Gosub Sub_ToggleOverlay
     } else {
@@ -77,7 +65,7 @@ Sub_Right:
     if OverlayVisible {
         Send %ChatHotkey%
         Sleep %SleepInterval%
-        Send %MessageRight%
+        SendRaw %MessageRight%
         Send {enter}
         Gosub Sub_ToggleOverlay
     } else {
@@ -91,7 +79,7 @@ Sub_Down:
     if OverlayVisible {
         Send %ChatHotkey%
         Sleep %SleepInterval%
-        Send %MessageDown%
+        SendRaw %MessageDown%
         Send {enter}
         Gosub Sub_ToggleOverlay
     } else {
@@ -125,7 +113,7 @@ Sub_ShowOverlay:
 
     WinMove PositionX, PositionY
     Gui GUI_Overlay:Show, NoActivate
-    SetTimer Sub_TimeoutOverlay, %FadeDelay%
+    SetTimer Sub_TimeoutOverlay, -%FadeDelay%
 return
 
 Sub_HideOverlay:
@@ -135,6 +123,40 @@ return
 Sub_TimeoutOverlay:
     if OverlayVisible {
         Gosub Sub_ToggleOverlay
+    }
+return
+
+Sub_WatchPOV:
+    if WinActive("ahk_exe RocketLeague.exe")
+    {
+        GetKeyState POV, JoyPOV
+        if OverlayVisible {
+            if (POV >= 0 and POV <= 4500) {
+                Gosub Sub_Up
+            } else if (POV > 4500 and POV <= 9000) {
+                Gosub Sub_Right
+            } else if (POV > 9000 and POV <= 18000) {
+                Gosub Sub_Down
+            } else if (POV > 18000 and POV <= 27000) {
+                Gosub Sub_Left
+            }
+        } else {
+            if (POV < 0) {
+                POVReleased = 1
+            } else if (POV >= 0 and POV <= 4500 and POVReleased) {
+                Send 1
+                POVReleased = 0
+            } else if (POV > 4500 and POV <= 9000 and POVReleased) {
+                Send 3
+                POVReleased = 0
+            } else if (POV > 9000 and POV <= 18000 and POVReleased) {
+                Send 4
+                POVReleased = 0
+            } else if (POV > 18000 and POV <= 27000 and POVReleased) {
+                Send 2
+                POVReleased = 0
+            }
+        }
     }
 return
 

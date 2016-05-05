@@ -11,35 +11,35 @@ OverlayVisible := 0
 PositionX      := 31   ; x position of top left corner of overlay
 PositionY      := 423  ; y position of top left corner of overlay
 ControllerMode := "PC" ; which controller icons to use (PS, XB, XB1), can set to PC to use numbers
-FadeDelay      := 2000 ; number of milliseconds before menu fades
+FadeDelay      := 2000 ; number of milliseconds before overlay fades
 SleepInterval  := 400  ; number of milliseconds to wait between chat hotkey and message
 
 ; Trigger hotkey (can add multiple triggers with different groups of messages, just copy this, replace F1 with another hotkey, and change the messages)
 #IfWinActive ahk_exe RocketLeague.exe
 F1::
-    ChatHotkey     := "T"              ; key assigned to chat (or teamchat if you want to output to teamchat)
-    MessageGroup   := "CUSTOM"         ; the category heading for this group (INFORMATIONAL/COMPLIMENTS/REACTIONS/APOLOGIES are the in-game headings)
-    MessageUp      := "gg"             ; message assigned to up for this group
-    MessageLeft    := "glhf"           ; message assigned to left for this group
-    MessageRight   := "What a pass!"   ; message assigned to right for this group
-    MessageDown    := "Psyonix rules!" ; message assigned to down for this group
+    ChatHotkey     := "T"            ; key assigned to chat (or teamchat if you want to output to teamchat)
+    MessageGroup   := "CUSTOM"       ; the category heading for this group (INFORMATIONAL/COMPLIMENTS/REACTIONS/APOLOGIES are the in-game headings)
+    MessageUp      := "gg"           ; message assigned to up for this group
+    MessageLeft    := "glhf"         ; message assigned to left for this group
+    MessageRight   := "What a pass!" ; message assigned to right for this group
+    MessageDown    := "Nice clear!"  ; message assigned to down for this group
     Gosub Sub_BuildHTML
     Gosub Sub_ToggleOverlay
 return
 
-; Up hotkey
+; 1st item hotkey
 #IfWinActive ahk_exe RocketLeague.exe
 $1::Gosub Sub_Up
 
-; Left hotkey
+; 2nd item hotkey
 #IfWinActive ahk_exe RocketLeague.exe
 $2::Gosub Sub_Left
 
-; Right hotkey
+; 3rd item hotkey
 #IfWinActive ahk_exe RocketLeague.exe
 $3::Gosub Sub_Right
 
-; Down hotkey
+; 4th item hotkey
 #IfWinActive ahk_exe RocketLeague.exe
 $4::Gosub Sub_Down
 
@@ -49,7 +49,7 @@ Sub_Up:
     if OverlayVisible {
         Send %ChatHotkey%
         Sleep %SleepInterval%
-        Send %MessageUp%
+        SendRaw %MessageUp%
         Send {enter}
         Gosub Sub_ToggleOverlay
     } else {
@@ -63,7 +63,7 @@ Sub_Left:
     if OverlayVisible {
         Send %ChatHotkey%
         Sleep %SleepInterval%
-        Send %MessageLeft%
+        SendRaw %MessageLeft%
         Send {enter}
         Gosub Sub_ToggleOverlay
     } else {
@@ -77,7 +77,7 @@ Sub_Right:
     if OverlayVisible {
         Send %ChatHotkey%
         Sleep %SleepInterval%
-        Send %MessageRight%
+        SendRaw %MessageRight%
         Send {enter}
         Gosub Sub_ToggleOverlay
     } else {
@@ -91,7 +91,7 @@ Sub_Down:
     if OverlayVisible {
         Send %ChatHotkey%
         Sleep %SleepInterval%
-        Send %MessageDown%
+        SendRaw %MessageDown%
         Send {enter}
         Gosub Sub_ToggleOverlay
     } else {
