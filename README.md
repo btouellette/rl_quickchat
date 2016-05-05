@@ -6,7 +6,7 @@ I've provided two versions of the script, one is the version I use with my 360 c
 How to Use
 ------
 1. Download and unzip repository: https://github.com/btouellette/rl_quickchat/archive/master.zip
-2. Install AutoHotkey
+2. Install [AutoHotkey](https://autohotkey.com/ "AutoHotkey")
 3. Edit **RL_QuickChat_Controller.ahk** or **RL_QuickChat_KB.ahk** to customize to taste. You can:
   * Change the messages
   * Assign keybindings (default for KB is F1 for opening the chat menu and 1/2/3/4 for selecting message, default for Controller is Joy6 which is RB on the 360 controller)
@@ -15,5 +15,5 @@ How to Use
   * Add as many new message groups with their own keybindings as you want
 4. Run AHK file
 5. Launch Rocket League
-6. If you're using the Controller version you should unbind the Gamepad Quick Chat commands and have them bound only to 1/2/3/4
+6. If you're using the Controller version you should unbind the Gamepad Quick Chat commands and have them bound only to keyboard 1/2/3/4
 7. Enjoy!
