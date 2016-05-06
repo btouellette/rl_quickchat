@@ -19,3 +19,5 @@ How to Use
 5. Launch Rocket League
 6. If you're using the Controller version you should unbind the Gamepad Quick Chat commands and have them bound only to keyboard 1/2/3/4
 7. Enjoy!
+
+If you want to have longer messages and only the last bit of your message is being sent you can replace "SendMode Input" at the top with "SetKeyDelay 1" and it'll add a 1ms delay between each keystroke to fix the issue.
